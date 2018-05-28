@@ -8,7 +8,7 @@ def welcome():
     return [b'Welcome to WSGI application!']
 
 
-@request.get("/admin")
-def admin(environ, start_response):
-    start_response('200 OK', [('Content-Type', 'text/plain')])
+@request.get(url="/admin")
+def admin():
+    #start_response('200 OK', [('Content-Type', 'text/plain')])
     return [b'Admin WSGI application']

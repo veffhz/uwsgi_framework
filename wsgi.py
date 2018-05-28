@@ -17,8 +17,8 @@ def internal_error(environ, start_response):
 
 class Routing:
 
-    def __init__(self, urls):
-        self.urls = urls
+    def __init__(self, _urls):
+        self.urls = _urls
 
     def __call__(self, environ, start_response):
         uri = environ['REQUEST_URI']
