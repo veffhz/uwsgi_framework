@@ -1,4 +1,4 @@
-from wsgilib import routes
+from wsgilib import urls
 
 
 def not_found(environ, start_response):
@@ -38,4 +38,4 @@ class Routing:
                 yield err
 
 
-application = Routing(routes.Request.URLS)
+application = Routing(urls.Request.URLS)

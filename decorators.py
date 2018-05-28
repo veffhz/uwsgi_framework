@@ -1,6 +1,6 @@
 def get(url):
     def decorator(app):
-        from wsgilib.routes import Request
+        from wsgilib.urls import Request
         Request.URLS[url] = app
         print('path {} to get request mapped.'.format(url))
         return app
@@ -9,7 +9,7 @@ def get(url):
 
 def post(url):
     def decorator(app):
-        from wsgilib.routes import Request
+        from wsgilib.urls import Request
         Request.URLS[url] = app
         print('path {} to post request mapped.'.format(url))
         return app
