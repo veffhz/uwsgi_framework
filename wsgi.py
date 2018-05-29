@@ -1,4 +1,7 @@
+import logging
+
 from urls import Request
+import template
 
 
 def apply_decorators():
@@ -12,37 +15,35 @@ class Application:
         self.urls = _urls
 
     def __call__(self, environ, start_response):
-        uri = environ['PATH_INFO']
+        path = environ['PATH_INFO']
 
-        if uri not in self.urls:
-            self.app = self.not_found_handler
+        if path in self.urls:
+            self.app = self.urls[path](environ, start_response)
         else:
-            self.app = self.urls[uri]
+            return self.not_found_handler(start_response)
 
         try:
-            result = self.app(environ, start_response)
-            for item in result:
-                yield item
+            return self.app
         except Exception as e:
-            print(e)
-            return self.error_handler(environ, start_response)
+            logging.warning(e)
+            return self.error_handler(start_response)
 
     @staticmethod
-    def not_found_handler(environ, start_response):
+    def not_found_handler(start_response):
         status = "404 Not Found"
         headers = [('Content-Type', 'text/html')]
         start_response(status, headers)
-        return [b"HTTP 404"]
+        yield template.on_tag("h1", status)
 
     @staticmethod
-    def error_handler(environ, start_response):
+    def error_handler(start_response):
         status = "500 Internal Server Error"
         headers = [('Content-Type', 'text/html')]
         start_response(status, headers)
-        return [b"Internal Server Error 500"]
+        yield template.on_tag("h1", status)
 
 
 apply_decorators()
 
 
-application = Application(Request.URLS)
+application = Application(Request.urls_handlers)

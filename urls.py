@@ -1,9 +1,9 @@
 from functools import wraps
+import logging
 
 
 class Request:
-
-    URLS = {}
+    urls_handlers = {}
 
     def get(self, url):
         def decorator(app):
@@ -12,8 +12,8 @@ class Request:
             def wrapper(*args, **kwargs):
                 return app(args)
 
-            self.URLS[url] = wrapper
-            print('path {} to get request mapped.'.format(url))
+            self.urls_handlers[url] = wrapper
+            logging.info('path {} to get request mapped.'.format(url))
             return wrapper
         return decorator
 
@@ -24,8 +24,8 @@ class Request:
             def wrapper(*args, **kwargs):
                 return app(args)
 
-            self.URLS[url] = app
-            print('path {} to post request mapped.'.format(url))
+            self.urls_handlers[url] = app
+            logging.info('path {} to post request mapped.'.format(url))
             return wrapper
 
         return decorator
