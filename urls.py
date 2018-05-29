@@ -2,8 +2,10 @@ from functools import wraps
 import logging
 
 
-class Request:
-    urls_handlers = {}
+urls_handlers = {}
+
+
+class HttpRequest:
 
     def get(self, url):
         def decorator(app):
@@ -13,7 +15,7 @@ class Request:
                 start_response("200 OK", [('Content-Type', 'text/html')])
                 return app(environ)
 
-            self.urls_handlers[url] = wrapper
+            urls_handlers[url] = wrapper
             logging.info('path {} to get request mapped.'.format(url))
             return wrapper
         return decorator
@@ -26,7 +28,7 @@ class Request:
                 start_response("200 OK", [('Content-Type', 'text/html')])
                 return app(environ)
 
-            self.urls_handlers[url] = app
+            urls_handlers[url] = app
             logging.info('path {} to post request mapped.'.format(url))
             return wrapper
 

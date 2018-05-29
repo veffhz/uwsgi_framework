@@ -1,7 +1,7 @@
 import template
-from urls import Request
+from urls import HttpRequest
 
-request = Request()
+request = HttpRequest()
 
 
 @request.get(url="/")

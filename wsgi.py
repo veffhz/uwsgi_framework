@@ -1,6 +1,6 @@
 import logging
 
-from urls import Request
+from urls import urls_handlers
 import template
 
 
@@ -33,17 +33,17 @@ class Application:
         status = "404 Not Found"
         headers = [('Content-Type', 'text/html')]
         start_response(status, headers)
-        yield template.on_tag("h1", status)
+        yield template.on_tag("h3", status)
 
     @staticmethod
     def error_handler(start_response):
         status = "500 Internal Server Error"
         headers = [('Content-Type', 'text/html')]
         start_response(status, headers)
-        yield template.on_tag("h1", status)
+        yield template.on_tag("h3", status)
 
 
 apply_decorators()
 
 
-application = Application(Request.urls_handlers)
+application = Application(urls_handlers)
