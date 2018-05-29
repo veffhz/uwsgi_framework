@@ -1,12 +1,14 @@
+import template
 from urls import Request
+
 request = Request()
 
 
 @request.get(url="/")
 def welcome(request):
-     return [b'Welcome to WSGI application!']
+    return [template.on_page('Welcome to WSGI application!')]
 
 
 @request.get(url="/admin")
 def admin(request):
-    return [b'Admin WSGI application']
+    return [template.on_page('Admin WSGI application')]

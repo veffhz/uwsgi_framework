@@ -9,8 +9,9 @@ class Request:
         def decorator(app):
 
             @wraps(app)
-            def wrapper(*args, **kwargs):
-                return app(args)
+            def wrapper(environ, start_response):
+                start_response("200 OK", [('Content-Type', 'text/html')])
+                return app(environ)
 
             self.urls_handlers[url] = wrapper
             logging.info('path {} to get request mapped.'.format(url))
@@ -21,8 +22,9 @@ class Request:
         def decorator(app):
 
             @wraps(app)
-            def wrapper(*args, **kwargs):
-                return app(args)
+            def wrapper(environ, start_response):
+                start_response("200 OK", [('Content-Type', 'text/html')])
+                return app(environ)
 
             self.urls_handlers[url] = app
             logging.info('path {} to post request mapped.'.format(url))
