@@ -10,9 +10,9 @@ class Request:
 
             @wraps(app)
             def wrapper(*args, **kwargs):
-                return app()
+                return app(args)
 
-            Request.URLS[url] = wrapper
+            self.URLS[url] = wrapper
             print('path {} to get request mapped.'.format(url))
             return wrapper
         return decorator
@@ -22,11 +22,10 @@ class Request:
 
             @wraps(app)
             def wrapper(*args, **kwargs):
-                return app()
+                return app(args)
 
-            Request.URLS[url] = app
+            self.URLS[url] = app
             print('path {} to post request mapped.'.format(url))
             return wrapper
 
         return decorator
-
