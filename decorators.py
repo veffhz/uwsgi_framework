@@ -1,7 +1,7 @@
 from functools import wraps
 import logging
 
-urls_handlers = {}
+handlers = {}
 
 
 def get(url):
@@ -11,10 +11,9 @@ def get(url):
             start_response("200 OK", [('Content-Type', 'text/html')])
             return app(environ)
 
-        urls_handlers[url] = wrapper
+        handlers[url] = wrapper
         logging.info('path {} to get request mapped.'.format(url))
         return wrapper
-
     return decorator
 
 
@@ -25,8 +24,7 @@ def post(url):
             start_response("200 OK", [('Content-Type', 'text/html')])
             return app(environ)
 
-        urls_handlers[url] = app
+        handlers[url] = app
         logging.info('path {} to post request mapped.'.format(url))
         return wrapper
-
     return decorator

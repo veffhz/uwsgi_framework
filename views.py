@@ -1,16 +1,18 @@
 import template
-from decorators import get
+from decorators import get, handlers
 
 
-def init():
-    pass
+def get_handlers():
+    return handlers
 
 
 @get(url="/")
 def welcome(request):
-    return [template.on_page('Welcome to WSGI application!')]
+    content = 'Welcome to WSGI application!'
+    return [template.on_page(content)]
 
 
 @get(url="/admin")
 def admin(request):
-    return [template.on_page('Admin WSGI application')]
+    content = 'Admin WSGI application'
+    return [template.on_page(content)]
