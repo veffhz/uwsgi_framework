@@ -1,24 +1,19 @@
 import logging
-
-from urls import urls_handlers
 import template
-
-
-def apply_decorators():
-    from views import admin
-    from views import welcome
+from decorators import urls_handlers
 
 
 class Application:
 
-    def __init__(self, _urls):
-        self.urls = _urls
+    def __init__(self):
+        from views import init
+        init()
 
     def __call__(self, environ, start_response):
         path = environ['PATH_INFO']
 
-        if path in self.urls:
-            self.app = self.urls[path](environ, start_response)
+        if path in urls_handlers:
+            self.app = urls_handlers[path](environ, start_response)
         else:
             return self.not_found_handler(start_response)
 
@@ -43,7 +38,4 @@ class Application:
         yield template.on_tag("h3", status)
 
 
-apply_decorators()
-
-
-application = Application(urls_handlers)
+application = Application()
