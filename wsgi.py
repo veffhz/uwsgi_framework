@@ -1,5 +1,6 @@
 import logging
 import template
+
 from views import get_handlers
 
 
@@ -9,10 +10,13 @@ class Application:
         self.handlers = get_handlers()
 
     def __call__(self, environ, start_response):
-        path = environ['PATH_INFO']
+        path = environ.get('PATH_INFO')
 
         if path in self.handlers:
             self.app = self.handlers[path](environ, start_response)
+        elif not path.endswith('/'):
+            query_string = environ.get('QUERY_STRING')
+            return self.trailing_slash_handler(path, query_string, start_response)
         else:
             return self.not_found_handler(start_response)
 
@@ -35,6 +39,17 @@ class Application:
         headers = [('Content-Type', 'text/html')]
         start_response(status, headers)
         yield template.on_tag("h3", status)
+
+    @staticmethod
+    def trailing_slash_handler(path, query_string, start_response):
+        status = "301 Moved Permanently"
+        if len(query_string) > 0:
+            path = "%s/?%s" % (path, query_string)
+        else:
+            path = "%s/" % path
+        headers = [('Location', '{}'.format(path))]
+        start_response(status, headers)
+        yield b''
 
 
 application = Application()
