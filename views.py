@@ -9,7 +9,7 @@ def get_handlers():
 @get(url="/")
 def welcome(request):
     content = 'Welcome to WSGI application!'
-    return template.on_page(content)
+    return template.on_page(content), 200
 
 
 @get(url="/admin/")
@@ -21,4 +21,6 @@ def admin(request):
 @get(url="/debug/")
 def debug(request):
     content = request
-    return template.on_page(content)
+    return template.on_page(content), 200, [
+        ('Custom-header-mode', 'DebugMode')
+    ]
