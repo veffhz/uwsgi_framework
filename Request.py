@@ -1,8 +1,7 @@
-class RequestGet:
+class RequestBase:
     def __init__(self, environ):
         self.environ = environ
         self.headers = self.parse_headers()
-        self.query_string = self.parse_query_string()
 
     def parse_headers(self):
         headers = {}
@@ -20,12 +19,19 @@ class RequestGet:
                 headers[name] = self.environ[name]
         return headers
 
+
+class RequestGet(RequestBase):
+    def __init__(self, environ):
+        super().__init__(environ)
+        self.query_string = self.parse_query_string()
+
     def parse_query_string(self):
         params = {}
         query_string = self.environ.get('QUERY_STRING')
-        for param in query_string.split('&'):
-            key, value = param.split('=')
-            params[key] = str.replace(value, "/", '')
+        if len(query_string) > 0:
+            for param in query_string.split('&'):
+                key, value = param.split('=')
+                params[key] = str.replace(value, "/", '')
         return params
 
     def __str__(self):
@@ -39,10 +45,6 @@ class RequestGet:
 
 
 class RequestPost:
-    def __init__(self, data, start_response):
-        pass
-
-
-class Response:
+    """TODO"""
     def __init__(self, data, start_response):
         pass

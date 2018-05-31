@@ -1,7 +1,8 @@
 from functools import wraps
 import logging
 
-from http_objects import RequestGet
+from Response import Response
+from Request import RequestGet
 
 handlers = {}
 
@@ -10,8 +11,9 @@ def get(url):
     def decorator(app):
         @wraps(app)
         def wrapper(environ, start_response):
-            start_response("200 OK", [('Content-Type', 'text/html')])
-            return app(RequestGet(environ))
+            headers = [('Content-Type', 'text/html')]
+            data = app(RequestGet(environ))
+            return Response(headers, start_response, "200 OK", data)
 
         handlers[url] = wrapper
         logging.info('path {} to get request mapped.'.format(url))
