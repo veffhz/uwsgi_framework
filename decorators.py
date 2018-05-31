@@ -1,8 +1,8 @@
 from functools import wraps
 import logging
 
-from Response import Response
-from Request import RequestGet
+from response import Response
+from request import RequestGet
 
 handlers = {}
 
