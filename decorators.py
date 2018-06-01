@@ -5,9 +5,11 @@ from http import HTTPStatus
 from response import Response
 from request import RequestGet
 
-from response_helpers import is_tuple
-from response_helpers import is_tuple_with_headers
-from response_helpers import get_code_name
+from helpers import is_tuple
+from helpers import is_tuple_with_headers
+from helpers import get_code_name
+from helpers import not_allowed_handler
+from helpers import compile_url
 
 handlers = {}
 
@@ -17,6 +19,10 @@ def get(url):
         @wraps(app)
         def wrapper(environ, start_response):
             default_headers = [('Content-Type', 'text/html')]
+
+            if environ.get('REQUEST_METHOD') != 'GET':
+                return not_allowed_handler(start_response)
+
             handler_result = app(RequestGet(environ))
             handler_headers = {}
             status_code = HTTPStatus.OK
@@ -31,10 +37,9 @@ def get(url):
             status = get_code_name(status_code)
             headers = dict(default_headers)
             headers.update(dict(handler_headers))
-            print(headers)
             return Response(list(headers.items()), start_response, status, response_text)
 
-        handlers[url] = wrapper
+        handlers[compile_url(url)] = wrapper
         logging.info('path {} to get request mapped.'.format(url))
         return wrapper
     return decorator

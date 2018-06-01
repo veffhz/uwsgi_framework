@@ -11,9 +11,9 @@ class Application:
 
     def __call__(self, environ, start_response):
         path = environ.get('PATH_INFO')
-
-        if path in self.handlers:
-            self.app = self.handlers[path](environ, start_response)
+        app = self.find_handler(path)
+        if app:
+            self.app = app(environ, start_response)
         elif not path.endswith('/'):
             query_string = environ.get('QUERY_STRING')
             return self.trailing_slash_handler(path, query_string, start_response)
@@ -25,6 +25,10 @@ class Application:
         except Exception as e:
             logging.warning(e)
             return self.error_handler(start_response)
+
+    def find_handler(self, path):
+        funcs = [self.handlers[x] for x in self.handlers.keys() if x.match(path)]
+        return funcs[0]
 
     @staticmethod
     def not_found_handler(start_response):
