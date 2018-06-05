@@ -1,3 +1,10 @@
+"""
+WSGI entry point
+It exposes the WSGI callable as a module-level variable named ``application``.
+
+"""
+
+
 import logging
 import template
 

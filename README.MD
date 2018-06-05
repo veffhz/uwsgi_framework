@@ -8,9 +8,16 @@ def application(environ, start_response):
 
 Challenge 3
 
-Написать свой wsgi веб-фреймворк.
+Write custom wsgi implementation.
 
-За основу взять пример выше. Добавить парсинг запроса, обработку роутинга, проброс запроса во view, генерацию ответа, проброс её наружу..
+Get helloWorld-function as base. Add request parsing, routing, throwing request to view, generate answer, return answer.
+
+
+##### Usage:
+
+Put your code in views.py file and decorate function request method with url parameter.
+Function takes Request object and return raw html content, or content and status, or content, status and custom headers.
+
 
 ```
 uwsgi --http :9090 --wsgi-file wsgi.py

@@ -1,3 +1,13 @@
+"""
+Put your code in this file and decorate function
+request method with url parameter.
+Function takes Request object and return raw html
+content, or content and status, or content, status
+and custom headers.
+
+"""
+
+
 import template
 from decorators import get, handlers
 
